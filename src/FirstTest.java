@@ -98,7 +98,7 @@ public class FirstTest {
     }
 
     @Test
-    public void testCompareArticleTitle() {
+    public void testCompareArticleDescription() {
         waitForElementAndClick(
                 By.xpath("//*[@resource-id='org.wikipedia:id/fragment_onboarding_skip_button']"),
                 "Cannot find Skip button",
@@ -131,6 +131,26 @@ public class FirstTest {
                 "We see unexpected description!",
                 "Object-oriented programming language",
                 article_description
+        );
+    }
+
+    @Test
+    public void checkSearchInputPlaceholderText() {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/fragment_onboarding_skip_button"),
+                "Cannot find Skip button",
+                5
+        );
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find Search Wikipedia input",
+                5
+        );
+        assertElementHasText(
+                By.id("org.wikipedia:id/search_src_text"),
+                "Search Wikipedia",
+                "Search input has wrong placeholder!",
+                5
         );
     }
 
@@ -167,4 +187,10 @@ public class FirstTest {
         element.clear();
         return element;
     }
+
+    private boolean assertElementHasText(By by, String expected_value, String error_message, long timeInSeconds) {
+        WebDriverWait wait = new WebDriverWait(driver, timeInSeconds);
+        wait.withMessage(error_message + "\n");
+        return wait.until(ExpectedConditions.textToBe(by, expected_value));
+    };
 }
