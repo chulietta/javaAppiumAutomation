@@ -189,6 +189,50 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void testSearchResultsHasSearchedWord() {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/fragment_onboarding_skip_button"),
+                "Cannot find Skip button",
+                5
+        );
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find Search Wikipedia input",
+                5
+        );
+        waitForElementAndSendKeys(
+                By.id("org.wikipedia:id/search_src_text"),
+                "Java",
+                "Cannot find search input",
+                15
+        );
+        waitForElementPresent(
+                By.id("org.wikipedia:id/search_results_list"),
+                "Search results are empty",
+                15
+        );
+
+        assertElementContainsText(
+                By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']//following::*[@resource-id='org.wikipedia:id/page_list_item_title'][1]"),
+                "Java",
+                "First search result not includes 'Java'",
+                15
+        );
+        assertElementContainsText(
+                By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']//following::*[@resource-id='org.wikipedia:id/page_list_item_title'][2]"),
+                "Java",
+                "Second search result not includes 'Java'",
+                15
+        );
+        assertElementContainsText(
+                By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']//following::*[@resource-id='org.wikipedia:id/page_list_item_title'][3]"),
+                "Java",
+                "Third search result not includes 'Java'",
+                15
+        );
+    }
+
     private WebElement waitForElementPresent(By by, String error_message, long timeInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeInSeconds);
         wait.withMessage(error_message + "\n");
@@ -227,5 +271,11 @@ public class FirstTest {
         WebDriverWait wait = new WebDriverWait(driver, timeInSeconds);
         wait.withMessage(error_message + "\n");
         return wait.until(ExpectedConditions.textToBe(by, expected_value));
-    };
+    }
+
+    private boolean assertElementContainsText(By by, String expected_value, String error_message, long timeInSeconds) {
+        WebDriverWait wait = new WebDriverWait(driver, timeInSeconds);
+        wait.withMessage(error_message + "\n");
+        return wait.until(ExpectedConditions.attributeContains(by, "text", expected_value));
+    }
 }
