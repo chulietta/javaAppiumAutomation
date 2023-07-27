@@ -154,6 +154,41 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void testSearchResultsAfterClearSearchInput() {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/fragment_onboarding_skip_button"),
+                "Cannot find Skip button",
+                5
+        );
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find Search Wikipedia input",
+                5
+        );
+        waitForElementAndSendKeys(
+                By.id("org.wikipedia:id/search_src_text"),
+                "Java",
+                "Cannot find search input",
+                15
+        );
+        waitForElementPresent(
+                By.id("org.wikipedia:id/search_results_list"),
+                "Search results are empty",
+                15
+        );
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_close_btn"),
+                "Cannot find X button",
+                5
+        );
+        waitForElementNotPresent(
+                By.id("org.wikipedia:id/search_results_list"),
+                "Search results not cleared",
+                15
+        );
+    }
+
     private WebElement waitForElementPresent(By by, String error_message, long timeInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeInSeconds);
         wait.withMessage(error_message + "\n");
