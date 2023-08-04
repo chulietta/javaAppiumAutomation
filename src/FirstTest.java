@@ -559,6 +559,128 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void checkMyListAfterDeleteArticle() {
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/fragment_onboarding_skip_button']"),
+                "Cannot find Skip button",
+                5
+        );
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find Search Wikipedia input",
+                5
+        );
+        waitForElementAndSendKeys(
+                By.id("org.wikipedia:id/search_src_text"),
+                "java",
+                "Cannot find search input",
+                15
+        );
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']//*[@text='Object-oriented programming language']"),
+                "Cannot find 'Object-oriented programming language' description searched by 'Java'",
+                5
+        );
+        waitForElementPresent(
+                By.id("pcs-edit-section-title-description"),
+                "Cannot find article title",
+                15
+        );
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/page_save"),
+                "Cannot find button to save article",
+                5
+        );
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Add to list')]"),
+                "Cannot find Add to List link",
+                5
+        );
+        waitForElementAndSendKeys(
+                By.id("org.wikipedia:id/text_input"),
+                "Learning programming",
+                "Cannot put text into article text input",
+                15
+        );
+        waitForElementAndClick(
+                By.xpath("//*[@text='OK']"),
+                "Cannot press Ok button",
+                5
+        );
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find Search Wikipedia input",
+                5
+        );
+        waitForElementAndSendKeys(
+                By.xpath("//*[@resource-id='org.wikipedia:id/search_src_text']"),
+                "appium",
+                "Cannot find search input",
+                15
+        );
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='Appium']"),
+                "Cannot find 'Appium' title searched by 'Appium'",
+                5
+        );
+        waitForElementPresent(
+                By.xpath("//*[@resource-id='pcs-edit-section-title-description']"),
+                "Cannot find article title",
+                15
+        );
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/page_save"),
+                "Cannot find button to save article",
+                5
+        );
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Add to list')]"),
+                "Cannot find Add to List link",
+                5
+        );
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Learning programming')]"),
+                "Cannot choose my list",
+                5
+        );
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'View list')]"),
+                "Cannot find navigation to My list",
+                5
+        );
+        swipeElementToLeft(
+                By.xpath("//*[@text='Java (programming language)']"),
+                "Cannot find article for deleting"
+        );
+        waitForElementNotPresent(
+                By.xpath("//*[@text='Java (programming language)']"),
+                "Article not deleted",
+                5
+        );
+        waitForElementPresent(
+                By.xpath("//*[@text='Appium']"),
+                "Cannot see not deleted article",
+                5
+        );
+        waitForElementAndClick(
+                By.xpath("//*[@text='Appium']"),
+                "Cannot navigate to article",
+                5
+        );
+        WebElement title = waitForElementPresent(
+                By.xpath("//*[@resource-id='pcs-edit-section-title-description']"),
+                "Cannot find article title",
+                15
+        );
+        String article_title = title.getAttribute("name");
+
+        Assert.assertEquals(
+                "We see unexpected title!",
+                "Automation for Apps",
+                article_title
+        );
+    }
 
     private WebElement waitForElementPresent(By by, String error_message, long timeInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeInSeconds);
