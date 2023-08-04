@@ -529,6 +529,36 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void testTitleOfArticleVisibleAfterOpen() {
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/fragment_onboarding_skip_button']"),
+                "Cannot find Skip button",
+                5
+        );
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find Search Wikipedia input",
+                5
+        );
+        String search_line = "java";
+        waitForElementAndSendKeys(
+                By.xpath("//*[@resource-id='org.wikipedia:id/search_src_text']"),
+                search_line,
+                "Cannot find search input",
+                15
+        );
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']//*[@text='Object-oriented programming language']"),
+                "Cannot find 'Object-oriented programming language' description searched by" + search_line,
+                15
+        );
+        assertElementPresent(
+                By.xpath("//*[@resource-id='pcs-edit-section-title-description']"),
+                "Cannot find article title immediately after open"
+        );
+    }
+
 
     private WebElement waitForElementPresent(By by, String error_message, long timeInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeInSeconds);
@@ -637,6 +667,14 @@ public class FirstTest {
         int amountOfElements = getAmountElements(by);
         if (amountOfElements > 0) {
             String default_message = "An element" + by.toString() + "supposed to be not present";
+            throw new AssertionError(default_message + " " + error_message);
+        }
+    }
+
+    protected void assertElementPresent(By by, String error_message) {
+        int amountOfElements = getAmountElements(by);
+        if (amountOfElements == 0) {
+            String default_message = "An element" + by.toString() + "supposed to be present";
             throw new AssertionError(default_message + " " + error_message);
         }
     }
