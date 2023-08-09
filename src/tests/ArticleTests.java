@@ -15,8 +15,8 @@ public class ArticleTests extends CoreTestCase {
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine("Java");
         searchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
-        articlePageObject.waitForDescriptionElement();
-        String article_description = articlePageObject.getArticleDescription();
+        articlePageObject.waitForTitleElement();
+        String article_description = articlePageObject.getArticleTitle();
 
         assertEquals(
                 "We see unexpected description!",
@@ -33,7 +33,7 @@ public class ArticleTests extends CoreTestCase {
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine("Appium");
         searchPageObject.clickByArticleWithSubstring("Appium");
-        articlePageObject.waitForDescriptionElement();
+        articlePageObject.waitForTitleElement();
         articlePageObject.swipeToFooter();
     }
 }

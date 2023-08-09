@@ -12,7 +12,9 @@ public class SearchPageObject extends MainPageObject {
             SEARCH_CANCEL_BUTTON = "org.wikipedia:id/search_close_btn",
             SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/search_results_list']//*[@text='{SUBSTRING}']",
             SEARCH_RESULT_ELEMENT = "//*[@resource-id='org.wikipedia:id/page_list_item_title']",
-            SEARCH_EMPTY_RESULT_ELEMENT = "//*[@text='No results']";
+            SEARCH_EMPTY_RESULT_ELEMENT = "//*[@text='No results']",
+            SEARCH_RESULTS_LIST = "org.wikipedia:id/search_results_list",
+            SEARCH_RESULT_BY_ORDER_NUMBER_TPL = "//*[@resource-id='org.wikipedia:id/search_results_list']//following::*[@resource-id='org.wikipedia:id/page_list_item_title'][{NUMBER}]";
 
     public SearchPageObject(AppiumDriver driver) {
         super(driver);
@@ -21,6 +23,9 @@ public class SearchPageObject extends MainPageObject {
     //TEMPLATES METHODS
     private static String getResultSearchElement(String substring) {
         return SEARCH_RESULT_BY_SUBSTRING_TPL.replace("{SUBSTRING}", substring);
+    }
+    private static String getResultSearchElementByOrderNumber(String number) {
+        return SEARCH_RESULT_BY_ORDER_NUMBER_TPL.replace("{NUMBER}", number);
     }
     //TEMPLATES METHODS
 
@@ -39,6 +44,10 @@ public class SearchPageObject extends MainPageObject {
     public void initSearchInput() {
         this.waitForElementAndClick(By.xpath(SKIP_ELEMENT), "Cannot find Skip button", 5);
         this.waitForElementPresent(By.xpath(SEARCH_INIT_ELEMENT), "Cannot find search input after clicking search init element");
+        this.waitForElementAndClick(By.xpath(SEARCH_INIT_ELEMENT), "Cannot find Search Wikipedia input", 5);
+    }
+
+    public void clickSearchInput() {
         this.waitForElementAndClick(By.xpath(SEARCH_INIT_ELEMENT), "Cannot find Search Wikipedia input", 5);
     }
 
@@ -82,6 +91,31 @@ public class SearchPageObject extends MainPageObject {
                 placeholder,
                 "Search input has wrong placeholder!",
                 5
+        );
+    }
+     public void waitForSearchListIsPresented() {
+         this.waitForElementPresent(
+                 By.id(SEARCH_RESULTS_LIST),
+                 "Search results are empty",
+                 15
+         );
+     }
+
+    public void waitForSearchListIsNotPresented() {
+        this.waitForElementNotPresent(
+                By.id(SEARCH_RESULTS_LIST),
+                "Search results not cleared",
+                15
+        );
+    }
+    public void assertSearchResultContainsSearchRequest(String order_number) {
+        String search_result_xpath = getResultSearchElementByOrderNumber(order_number);
+        String search_request = "Java";
+        this.assertElementContainsText(
+                By.xpath(search_result_xpath),
+                search_request,
+                 "Search result " + order_number + " not includes " + search_request,
+                15
         );
     }
 }

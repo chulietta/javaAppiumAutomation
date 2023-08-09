@@ -19,7 +19,7 @@ public class MyListsTest extends CoreTestCase {
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine("Java");
         searchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
-        articlePageObject.waitForDescriptionElement();
+        articlePageObject.waitForTitleElement();
 
         String article_title = "Java (programming language)";
         String name_of_folder = "Learning programming";
