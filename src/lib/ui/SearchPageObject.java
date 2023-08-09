@@ -11,6 +11,7 @@ public class SearchPageObject extends MainPageObject {
             SEARCH_INPUT = "//*[@resource-id='org.wikipedia:id/search_src_text']",
             SEARCH_CANCEL_BUTTON = "org.wikipedia:id/search_close_btn",
             SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/search_results_list']//*[@text='{SUBSTRING}']",
+            SEARCH_RESULT_BY_TITLE_AND_DESCRIPTION_TPL = "//*[@resource-id='org.wikipedia:id/search_results_list']//*[contains(@text, '{TITLE}')]/following-sibling::*[contains(@text,'{DESCRIPTION}')]",
             SEARCH_RESULT_ELEMENT = "//*[@resource-id='org.wikipedia:id/page_list_item_title']",
             SEARCH_EMPTY_RESULT_ELEMENT = "//*[@text='No results']",
             SEARCH_RESULTS_LIST = "org.wikipedia:id/search_results_list",
@@ -24,10 +25,20 @@ public class SearchPageObject extends MainPageObject {
     private static String getResultSearchElement(String substring) {
         return SEARCH_RESULT_BY_SUBSTRING_TPL.replace("{SUBSTRING}", substring);
     }
+
     private static String getResultSearchElementByOrderNumber(String number) {
         return SEARCH_RESULT_BY_ORDER_NUMBER_TPL.replace("{NUMBER}", number);
     }
+
+    private static String getResultSearchElementByTitleAndDescription(String title, String description) {
+        return SEARCH_RESULT_BY_TITLE_AND_DESCRIPTION_TPL.replace("{TITLE}", title).replace("{DESCRIPTION}", description);
+    }
     //TEMPLATES METHODS
+
+    public void waitForElementByTitleAndDescription(String title, String description) {
+        String search_result_xpath = getResultSearchElementByTitleAndDescription(title, description);
+        this.waitForElementPresent(By.xpath(search_result_xpath), "Cannot find result with title " + title + " and description " + description, 15);
+    }
 
     public void waitForCancelButtonToAppear() {
         this.waitForElementPresent(By.id(SEARCH_CANCEL_BUTTON), "Cannot find search cancel button", 5);
@@ -93,13 +104,14 @@ public class SearchPageObject extends MainPageObject {
                 5
         );
     }
-     public void waitForSearchListIsPresented() {
-         this.waitForElementPresent(
-                 By.id(SEARCH_RESULTS_LIST),
-                 "Search results are empty",
-                 15
-         );
-     }
+
+    public void waitForSearchListIsPresented() {
+        this.waitForElementPresent(
+                By.id(SEARCH_RESULTS_LIST),
+                "Search results are empty",
+                15
+        );
+    }
 
     public void waitForSearchListIsNotPresented() {
         this.waitForElementNotPresent(
@@ -108,13 +120,14 @@ public class SearchPageObject extends MainPageObject {
                 15
         );
     }
+
     public void assertSearchResultContainsSearchRequest(String order_number) {
         String search_result_xpath = getResultSearchElementByOrderNumber(order_number);
         String search_request = "Java";
         this.assertElementContainsText(
                 By.xpath(search_result_xpath),
                 search_request,
-                 "Search result " + order_number + " not includes " + search_request,
+                "Search result " + order_number + " not includes " + search_request,
                 15
         );
     }

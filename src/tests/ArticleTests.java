@@ -8,7 +8,7 @@ import org.junit.Test;
 public class ArticleTests extends CoreTestCase {
 
     @Test
-    public void testCompareArticleDescription() {
+    public void testCompareArticleTitle() {
         SearchPageObject searchPageObject = new SearchPageObject(driver);
         ArticlePageObject articlePageObject = new ArticlePageObject(driver);
 
@@ -16,12 +16,12 @@ public class ArticleTests extends CoreTestCase {
         searchPageObject.typeSearchLine("Java");
         searchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
         articlePageObject.waitForTitleElement();
-        String article_description = articlePageObject.getArticleTitle();
+        String article_title = articlePageObject.getArticleTitle();
 
         assertEquals(
                 "We see unexpected description!",
-                "Object-oriented programming language",
-                article_description
+                "Java (programming language)",
+                article_title
         );
     }
 

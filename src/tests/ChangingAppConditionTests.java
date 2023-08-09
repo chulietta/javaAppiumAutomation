@@ -15,24 +15,24 @@ public class ChangingAppConditionTests extends CoreTestCase {
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine("Java");
         searchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
-        String description_before_rotation = articlePageObject.getArticleTitle();
+        String title_before_rotation = articlePageObject.getArticleTitle();
 
         this.rotateScreenLandscape();
 
-        String description_after_rotation = articlePageObject.getArticleTitle();
+        String title_after_rotation = articlePageObject.getArticleTitle();
         assertEquals(
                 "Article description have been change after rotation",
-                description_before_rotation,
-                description_after_rotation
+                title_before_rotation,
+                title_after_rotation
         );
 
         this.rotateScreenPortrait();
 
-        String description_after_second_rotation = articlePageObject.getArticleTitle();
+        String title_after_second_rotation = articlePageObject.getArticleTitle();
         assertEquals(
                 "Article description have been change after rotation",
-                description_before_rotation,
-                description_after_second_rotation
+                title_before_rotation,
+                title_after_second_rotation
         );
     }
 
