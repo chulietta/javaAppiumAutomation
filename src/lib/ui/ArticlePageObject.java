@@ -1,29 +1,28 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 public class ArticlePageObject extends MainPageObject {
     private final static String
-            TITLE = "//*[@resource-id='pcs-edit-section-title-description']/preceding-sibling::*[1]",
-            FOOTER_ELEMENT = "//android.view.View[@content-desc='View article in browser']",
-            SAVE_TO_MY_LIST_BUTTON = "org.wikipedia:id/page_save",
-            ADD_TO_LIST_LINK = "//*[contains(@text, 'Add to list')]",
-            MY_LIST_NAME_INPUT = "org.wikipedia:id/text_input",
-            MY_LIST_OK_BUTTON = "//*[@text='OK']",
-            MY_LIST_TITLE_TPL = "//*[contains(@text, '{TITLE}')]";
-
-    private static String getMyListByTitle(String title) {
-        return MY_LIST_TITLE_TPL.replace("{TITLE}", title);
-    }
+            TITLE = "xpath://*[@resource-id='pcs-edit-section-title-description']/preceding-sibling::*[1]",
+            FOOTER_ELEMENT = "xpath://android.view.View[@content-desc='View article in browser']",
+            SAVE_TO_MY_LIST_BUTTON = "id:org.wikipedia:id/page_save",
+            ADD_TO_LIST_LINK = "xpath://*[contains(@text, 'Add to list')]",
+            MY_LIST_NAME_INPUT = "id:org.wikipedia:id/text_input",
+            MY_LIST_OK_BUTTON = "xpath://*[@text='OK']",
+            MY_LIST_TITLE_TPL = "xpath://*[contains(@text, '{TITLE}')]";
 
     public ArticlePageObject(AppiumDriver driver) {
         super(driver);
     }
 
+    private static String getMyListByTitle(String title) {
+        return MY_LIST_TITLE_TPL.replace("{TITLE}", title);
+    }
+
     public WebElement waitForTitleElement() {
-        return this.waitForElementPresent(By.xpath(TITLE), "Cannot find article title", 15);
+        return this.waitForElementPresent(TITLE, "Cannot find article title", 15);
     }
 
     public String getArticleTitle() {
@@ -33,30 +32,31 @@ public class ArticlePageObject extends MainPageObject {
 
     public void swipeToFooter() {
         this.swipeUpToFindElement(
-                By.xpath(FOOTER_ELEMENT),
+                FOOTER_ELEMENT,
                 "Cannot find end of the article",
                 15
         );
     }
+
     public void addArticleToMyList(String name_of_folder) {
         this.waitForElementAndClick(
-                By.id(SAVE_TO_MY_LIST_BUTTON),
+                SAVE_TO_MY_LIST_BUTTON,
                 "Cannot find button to save article",
                 5
         );
         this.waitForElementAndClick(
-                By.xpath(ADD_TO_LIST_LINK),
+                ADD_TO_LIST_LINK,
                 "Cannot find Add to List link",
                 5
         );
         this.waitForElementAndSendKeys(
-                By.id(MY_LIST_NAME_INPUT),
+                MY_LIST_NAME_INPUT,
                 name_of_folder,
                 "Cannot put text into article text input",
                 15
         );
         this.waitForElementAndClick(
-                By.xpath(MY_LIST_OK_BUTTON),
+                MY_LIST_OK_BUTTON,
                 "Cannot press Ok button",
                 5
         );
@@ -65,17 +65,17 @@ public class ArticlePageObject extends MainPageObject {
     public void addArticleToExistingList(String name_of_folder) {
         String my_list_xpath = getMyListByTitle(name_of_folder);
         this.waitForElementAndClick(
-                By.id(SAVE_TO_MY_LIST_BUTTON),
+                SAVE_TO_MY_LIST_BUTTON,
                 "Cannot find button to save article",
                 5
         );
         this.waitForElementAndClick(
-                By.xpath(ADD_TO_LIST_LINK),
+                ADD_TO_LIST_LINK,
                 "Cannot find Add to List link",
                 5
         );
         this.waitForElementAndClick(
-                By.xpath(my_list_xpath),
+                my_list_xpath,
                 "Cannot choose list with title " + name_of_folder,
                 5
         );
@@ -83,7 +83,7 @@ public class ArticlePageObject extends MainPageObject {
 
     public void assertTitlePresent() {
         this.assertElementPresent(
-                By.xpath(TITLE),
+                TITLE,
                 "Cannot find article description immediately after open"
         );
     }
