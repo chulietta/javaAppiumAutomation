@@ -5,14 +5,18 @@ import lib.ui.ArticlePageObject;
 import lib.ui.MyListsPageObject;
 import lib.ui.NavigationUI;
 import lib.ui.SearchPageObject;
+import lib.ui.factories.ArticlePageObjectFactory;
+import lib.ui.factories.MyListPageObjectFactory;
+import lib.ui.factories.NavigationPageObjectFactory;
+import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class HomeworkTest extends CoreTestCase{
+public class HomeworkTest extends CoreTestCase {
 
     @Test
     public void testCheckSearchInputPlaceholderText() {
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
         searchPageObject.initSearchInput();
         searchPageObject.assertSearchInputPlaceholder("Search Wikipedia");
@@ -21,7 +25,7 @@ public class HomeworkTest extends CoreTestCase{
     /* Ex3 */
     @Test
     public void testSearchResultsAfterCancelSearch() {
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine("Java");
@@ -32,7 +36,7 @@ public class HomeworkTest extends CoreTestCase{
 
     @Test
     public void testSearchResultsHasSearchedWord() {
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine("Java");
@@ -45,8 +49,8 @@ public class HomeworkTest extends CoreTestCase{
     /* Ex6 */
     @Test
     public void testTitleOfArticleVisibleAfterOpen() {
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
-        ArticlePageObject articlePageObject = new ArticlePageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
+        ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
 
         searchPageObject.initSearchInput();
         String search_line = "java";
@@ -58,10 +62,10 @@ public class HomeworkTest extends CoreTestCase{
     /* Ex5 */
     @Test
     public void testCheckMyListAfterDeleteArticle() {
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
-        ArticlePageObject articlePageObject = new ArticlePageObject(driver);
-        MyListsPageObject myListsPageObject = new MyListsPageObject(driver);
-        NavigationUI navigationUI = new NavigationUI(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
+        ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
+        MyListsPageObject myListsPageObject = MyListPageObjectFactory.get(driver);
+        NavigationUI navigationUI = NavigationPageObjectFactory.get(driver);
 
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine("java");

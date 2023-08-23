@@ -1,17 +1,20 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import lib.Platform;
 import org.openqa.selenium.WebElement;
 
-public class ArticlePageObject extends MainPageObject {
-    private final static String
-            TITLE = "xpath://*[@resource-id='pcs-edit-section-title-description']/preceding-sibling::*[1]",
-            FOOTER_ELEMENT = "xpath://android.view.View[@content-desc='View article in browser']",
-            SAVE_TO_MY_LIST_BUTTON = "id:org.wikipedia:id/page_save",
-            ADD_TO_LIST_LINK = "xpath://*[contains(@text, 'Add to list')]",
-            MY_LIST_NAME_INPUT = "id:org.wikipedia:id/text_input",
-            MY_LIST_OK_BUTTON = "xpath://*[@text='OK']",
-            MY_LIST_TITLE_TPL = "xpath://*[contains(@text, '{TITLE}')]";
+import static lib.ui.NavigationUI.HOME_LINK;
+
+abstract public class ArticlePageObject extends MainPageObject {
+    protected static String
+            TITLE,
+            FOOTER_ELEMENT,
+            SAVE_TO_MY_LIST_BUTTON,
+            ADD_TO_LIST_LINK,
+            MY_LIST_NAME_INPUT,
+            MY_LIST_OK_BUTTON,
+            MY_LIST_TITLE_TPL;
 
     public ArticlePageObject(AppiumDriver driver) {
         super(driver);
@@ -31,11 +34,19 @@ public class ArticlePageObject extends MainPageObject {
     }
 
     public void swipeToFooter() {
-        this.swipeUpToFindElement(
-                FOOTER_ELEMENT,
-                "Cannot find end of the article",
-                15
-        );
+        if (Platform.getInstance().isAndroid()) {
+            this.swipeUpToFindElement(
+                    FOOTER_ELEMENT,
+                    "Cannot find end of the article",
+                    60
+            );
+        } else {
+            this.swipeUpTillElementAppear(
+                    FOOTER_ELEMENT,
+                    "Cannot find end of the article",
+                    60
+            );
+        }
     }
 
     public void addArticleToMyList(String name_of_folder) {
@@ -58,6 +69,22 @@ public class ArticlePageObject extends MainPageObject {
         this.waitForElementAndClick(
                 MY_LIST_OK_BUTTON,
                 "Cannot press Ok button",
+                5
+        );
+    }
+
+    public void addArticlesToMySaved() {
+        this.waitForElementAndClick(
+                SAVE_TO_MY_LIST_BUTTON,
+                "Cannot find button to save article",
+                5
+        );
+    }
+
+    public void closeArticle() {
+        this.waitForElementAndClick(
+                HOME_LINK,
+                "Cannot find 'W' button to close article",
                 5
         );
     }

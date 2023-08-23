@@ -2,10 +2,11 @@ package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
 
-public class NavigationUI extends MainPageObject {
+abstract public class NavigationUI extends MainPageObject {
 
-    private final static String
-            MY_LIST_OPEN_LINK = "xpath://*[contains(@text, 'View list')]";
+    protected static String
+            MY_LIST_OPEN_LINK,
+            HOME_LINK;
 
     public NavigationUI(AppiumDriver driver) {
         super(driver);

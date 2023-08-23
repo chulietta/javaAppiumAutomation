@@ -1,11 +1,14 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import lib.Platform;
 
-public class MyListsPageObject extends MainPageObject {
+abstract public class MyListsPageObject extends MainPageObject {
 
-    public static final String
-            ARTICLE_BY_TITLE_TPL = "xpath://*[contains(@text, '{TITLE}')]";
+    protected static String
+            ARTICLE_BY_TITLE_TPL,
+            CLOSE_SYNC_POPUP,
+            SWIPE_ACTION_DELETE_BUTTON;
 
     public MyListsPageObject(AppiumDriver driver) {
         super(driver);
@@ -40,6 +43,13 @@ public class MyListsPageObject extends MainPageObject {
                 article_xpath,
                 "Cannot find saved article with title " + article_title
         );
+        if (Platform.getInstance().isIOS()) {
+            this.waitForElementAndClick(
+                    SWIPE_ACTION_DELETE_BUTTON,
+                    "Cannot find and click delete button",
+                    10
+            );
+        }
         this.waitForArticleToDisappearByTitle(article_title);
     }
 
@@ -48,6 +58,14 @@ public class MyListsPageObject extends MainPageObject {
         this.waitForElementAndClick(
                 article_xpath,
                 "Cannot navigate to article",
+                5
+        );
+    }
+
+    public void closeSyncPopup() {
+        this.waitForElementAndClick(
+                CLOSE_SYNC_POPUP,
+                "Cannot close sync popup",
                 5
         );
     }
