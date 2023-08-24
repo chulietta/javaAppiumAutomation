@@ -70,7 +70,7 @@ public class MainPageObject {
         By by = this.getLocatorByString(locator);
         WebDriverWait wait = new WebDriverWait(driver, timeInSeconds);
         wait.withMessage(error_message + "\n");
-        return wait.until(ExpectedConditions.attributeContains(by, "text", expected_value));
+        return wait.until(ExpectedConditions.attributeContains(by, "name", expected_value));
     }
 
     public void swipeUp(int timeOfSwipe) {
@@ -180,8 +180,6 @@ public class MainPageObject {
         } else if (by_type.equals("id")) {
             return By.id(locator);
         } else if (by_type.equals("name")) {
-            return By.name(locator);
-        }else if (by_type.equals("type")) {
             return By.name(locator);
         } else {
             throw new IllegalArgumentException("Cannot get type of locator " + locator_with_type);

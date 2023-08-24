@@ -15,6 +15,8 @@ public class IOSSearchPageObject extends SearchPageObject {
         SEARCH_RESULT_ELEMENT = "xpath://XCUIElementTypeApplication[@name='Wikipedia']/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeCollectionView/XCUIElementTypeCell";
         SEARCH_EMPTY_RESULT_ELEMENT = "id:No results found";
         SEARCH_FROM_ARTICLE_BUTTON = "xpath://XCUIElementTypeButton[@name='Search Wikipedia']";
+        SEARCH_RESULTS_LIST = "xpath://XCUIElementTypeCollectionView";
+        SEARCH_RESULT_BY_ORDER_NUMBER_TPL = "xpath://XCUIElementTypeCollectionView/XCUIElementTypeCell[{NUMBER}]//XCUIElementTypeStaticText[1]";
     }
 
     public IOSSearchPageObject(AppiumDriver driver) {
