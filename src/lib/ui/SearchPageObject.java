@@ -1,6 +1,7 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import lib.Platform;
 
 abstract public class SearchPageObject extends MainPageObject {
 
@@ -14,7 +15,8 @@ abstract public class SearchPageObject extends MainPageObject {
             SEARCH_RESULT_ELEMENT,
             SEARCH_EMPTY_RESULT_ELEMENT,
             SEARCH_RESULTS_LIST,
-            SEARCH_RESULT_BY_ORDER_NUMBER_TPL;
+            SEARCH_RESULT_BY_ORDER_NUMBER_TPL,
+            SEARCH_FROM_ARTICLE_BUTTON;
 
     public SearchPageObject(AppiumDriver driver) {
         super(driver);
@@ -58,6 +60,9 @@ abstract public class SearchPageObject extends MainPageObject {
     }
 
     public void clickSearchInput() {
+        if (Platform.getInstance().isIOS()) {
+            this.waitForElementAndClick(SEARCH_FROM_ARTICLE_BUTTON, "Cannot find and click search button", 15);
+        }
         this.waitForElementAndClick(SEARCH_INIT_ELEMENT, "Cannot find Search Wikipedia input", 5);
     }
 

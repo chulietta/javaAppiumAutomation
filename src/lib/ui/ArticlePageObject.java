@@ -9,6 +9,7 @@ import static lib.ui.NavigationUI.HOME_LINK;
 abstract public class ArticlePageObject extends MainPageObject {
     protected static String
             TITLE,
+            DESCRIPTION,
             FOOTER_ELEMENT,
             SAVE_TO_MY_LIST_BUTTON,
             ADD_TO_LIST_LINK,
@@ -25,12 +26,21 @@ abstract public class ArticlePageObject extends MainPageObject {
     }
 
     public WebElement waitForTitleElement() {
-        return this.waitForElementPresent(TITLE, "Cannot find article title", 15);
+        return this.waitForElementPresent(TITLE, "Cannot find article title", 20);
+    }
+
+    public WebElement waitForDescriptionElement() {
+        return this.waitForElementPresent(DESCRIPTION, "Cannot find article description", 20);
     }
 
     public String getArticleTitle() {
         WebElement title_element = waitForTitleElement();
         return title_element.getAttribute("name");
+    }
+
+    public String getArticleDescription() {
+        WebElement description_element = waitForDescriptionElement();
+        return description_element.getAttribute("name");
     }
 
     public void swipeToFooter() {

@@ -7,6 +7,7 @@ public class AndroidArticlePageObject extends ArticlePageObject {
 
     static {
         TITLE = "xpath://*[@resource-id='pcs-edit-section-title-description']/preceding-sibling::*[1]";
+        DESCRIPTION = "xpath://*[@resource-id='pcs-edit-section-title-description']";
         FOOTER_ELEMENT = "xpath://android.view.View[@content-desc='View article in browser']";
         SAVE_TO_MY_LIST_BUTTON = "id:org.wikipedia:id/page_save";
         ADD_TO_LIST_LINK = "xpath://*[contains(@text, 'Add to list')]";

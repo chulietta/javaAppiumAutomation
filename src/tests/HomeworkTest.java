@@ -1,6 +1,7 @@
 package tests;
 
 import lib.CoreTestCase;
+import lib.Platform;
 import lib.ui.ArticlePageObject;
 import lib.ui.MyListsPageObject;
 import lib.ui.NavigationUI;
@@ -73,29 +74,40 @@ public class HomeworkTest extends CoreTestCase {
         articlePageObject.waitForTitleElement();
 
         String name_of_folder = "Learning programming";
-        articlePageObject.addArticleToMyList(name_of_folder);
+        if (Platform.getInstance().isAndroid()) {
+            articlePageObject.addArticleToMyList(name_of_folder);
+        } else {
+            articlePageObject.addArticlesToMySaved();
+        }
 
         searchPageObject.clickSearchInput();
         searchPageObject.typeSearchLine("appium");
         searchPageObject.clickByArticleWithSubstring("Appium");
-        articlePageObject.waitForTitleElement();
+        articlePageObject.waitForDescriptionElement();
 
-        articlePageObject.addArticleToExistingList(name_of_folder);
-        navigationUI.clickMyList();
-
+        if (Platform.getInstance().isAndroid()) {
+            articlePageObject.addArticleToExistingList(name_of_folder);
+            navigationUI.clickMyList();
+        } else {
+            articlePageObject.addArticlesToMySaved();
+            articlePageObject.closeArticle();
+            navigationUI.clickMyList();
+            myListsPageObject.closeSyncPopup();
+        }
         String article_for_delete_title = "Java (programming language)";
-        String article_titleNot_deleted = "Appium";
+        String article_title_not_deleted = "Appium";
+        String article_description_not_deleted = "Automation for Apps";
 
         myListsPageObject.swipeByArticleToDelete(article_for_delete_title);
-        myListsPageObject.waitForArticleToAppearByTitle(article_titleNot_deleted);
-        myListsPageObject.clickArticleTitleInMyList(article_titleNot_deleted);
-        articlePageObject.waitForTitleElement();
+        myListsPageObject.waitForArticleToAppearByTitle(article_title_not_deleted);
+        myListsPageObject.clickArticleTitleInMyList(article_title_not_deleted);
+        articlePageObject.waitForDescriptionElement();
 
-        String current_article_title = articlePageObject.getArticleTitle();
+        String current_article_description = articlePageObject.getArticleDescription();
         Assert.assertEquals(
-                "We see unexpected title!",
-                article_titleNot_deleted,
-                current_article_title
+                "We see unexpected description!",
+                article_description_not_deleted,
+                current_article_description
         );
     }
 }
